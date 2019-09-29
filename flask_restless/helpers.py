@@ -271,7 +271,7 @@ def is_mapped_class(cls):
 # http://stackoverflow.com/q/1958219/108197.
 def to_dict(instance, deep=None, exclude=None, include=None,
             exclude_relations=None, include_relations=None,
-            include_methods=None):
+            include_methods=None,  serializer=None):
     """Returns a dictionary representing the fields of the specified `instance`
     of a SQLAlchemy model.
 
@@ -311,6 +311,8 @@ def to_dict(instance, deep=None, exclude=None, include=None,
     be called and their return values added to the returned dictionary.
 
     """
+    if (serializer is not None):
+        return serializer(instance)
     if (exclude is not None or exclude_relations is not None) and \
             (include is not None or include_relations is not None):
         raise ValueError('Cannot specify both include and exclude.')

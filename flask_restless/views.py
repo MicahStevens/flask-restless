@@ -679,8 +679,10 @@ class API(ModelView):
         self.primary_key = primary_key
         # Use our default serializer and deserializer if none are specified.
         if serializer is None:
+            current_app.logger.debug(str("no custom serializer"))
             self.serialize = self._inst_to_dict
         else:
+            current_app.logger.debug(str(serializer))
             self.serialize = serializer
         if deserializer is None:
             self.deserialize = self._dict_to_inst
@@ -977,7 +979,8 @@ class API(ModelView):
                            exclude_relations=self.exclude_relations,
                            include=self.include_columns,
                            include_relations=self.include_relations,
-                           include_methods=self.include_methods)
+                           include_methods=self.include_methods,
+                           serializer=self.serialize)
                    for x in instances[start:end]]
         return dict(page=page_num, objects=objects, total_pages=total_pages,
                     num_results=num_results)
